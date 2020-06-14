@@ -1,0 +1,16 @@
+import packGame.BaseObject;
+import packMap.Terrain.*;
+import packMap.Hex;
+import packMap.Direction;
+import packEntities.*;
+import packEntities.Buildings.*;
+import packEntities.Units.*;
+
+public class CompiledClass extends BaseObject {
+
+    @Override
+    public void run() {
+        //Put in your code here
+    }
+    
+}
