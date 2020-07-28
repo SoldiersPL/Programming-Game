@@ -12,6 +12,8 @@ package packForms;
  */
 import java.awt.HeadlessException;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.Set;
 import javax.swing.DefaultListModel;
@@ -35,6 +37,7 @@ public class MapEditorForm extends BaseForm {
     boolean players[] = new boolean[Player.maxPlayerCount];
     boolean fullHouse = false;
     boolean processingClick = false; // in case of very fast clicks
+    HexagonalMap hexMap = new HexagonalMap();
     public MapEditorForm() {
         super();
         initForm();
@@ -47,6 +50,14 @@ public class MapEditorForm extends BaseForm {
     private void initForm()
     {
         initComponents();
+        mapPane.getViewport().add(hexMap);
+        hexMap.addMouseListener(new MouseListener() {
+            @Override public void mouseClicked(MouseEvent e) { hexMap_Click(e); }
+            @Override public void mousePressed(MouseEvent e) {}
+            @Override public void mouseReleased(MouseEvent e) {}
+            @Override public void mouseEntered(MouseEvent e) {}
+            @Override public void mouseExited(MouseEvent e) {}
+        });
         hexMap.setColumns(6);
         hexMap.setRows(6);
         InitFileChoosers();
@@ -95,8 +106,7 @@ public class MapEditorForm extends BaseForm {
         jFileChooserSave = new javax.swing.JFileChooser();
         jFileChooserLoad = new javax.swing.JFileChooser();
         jSplitPane1 = new javax.swing.JSplitPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        hexMap = new packMap.HexagonalMap();
+        mapPane = new javax.swing.JScrollPane();
         jSplitPane2 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
         jButtonSave = new javax.swing.JButton();
@@ -122,27 +132,7 @@ public class MapEditorForm extends BaseForm {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jSplitPane1.setDividerLocation(250);
-
-        hexMap.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                hexMapMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout hexMapLayout = new javax.swing.GroupLayout(hexMap);
-        hexMap.setLayout(hexMapLayout);
-        hexMapLayout.setHorizontalGroup(
-            hexMapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 247, Short.MAX_VALUE)
-        );
-        hexMapLayout.setVerticalGroup(
-            hexMapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 249, Short.MAX_VALUE)
-        );
-
-        jScrollPane1.setViewportView(hexMap);
-
-        jSplitPane1.setLeftComponent(jScrollPane1);
+        jSplitPane1.setLeftComponent(mapPane);
 
         jSplitPane2.setDividerLocation(165);
         jSplitPane2.setDividerSize(3);
@@ -273,9 +263,9 @@ public class MapEditorForm extends BaseForm {
 
     private void resetScrollBarPosition()
     {
-        jScrollPane1.getVerticalScrollBar().setValue(0);
-        jScrollPane1.getHorizontalScrollBar().setValue(0);
-        jScrollPane1.revalidate();
+        mapPane.getVerticalScrollBar().setValue(0);
+        mapPane.getHorizontalScrollBar().setValue(0);
+        mapPane.revalidate();
     }
     
     private void jMenuNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNewActionPerformed
@@ -384,7 +374,12 @@ public class MapEditorForm extends BaseForm {
         SaveMap();
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
-    private void hexMapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hexMapMouseClicked
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Back();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void hexMap_Click(java.awt.event.MouseEvent evt)
+    {
         if(processingClick) return;
         processingClick = true;
         Point coordinates = hexMap.pixelToTile(evt.getX(), evt.getY());
@@ -410,14 +405,9 @@ public class MapEditorForm extends BaseForm {
         players[startingHexDelegate.getPlayer().playerID] = true;
         SetCurrentPlayer();
         processingClick = false;
-    }//GEN-LAST:event_hexMapMouseClicked
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Back();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private packMap.HexagonalMap hexMap;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonSave;
@@ -433,10 +423,10 @@ public class MapEditorForm extends BaseForm {
     private javax.swing.JMenuItem jMenuNew;
     private javax.swing.JMenuItem jMenuSave;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JScrollPane mapPane;
     // End of variables declaration//GEN-END:variables
 }
