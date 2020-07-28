@@ -7,19 +7,17 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.TreeSet;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import packEntities.Buildings.City;
 import packEntities.EntityDescriptor;
 import packForms.packComponents.PlayerSlot;
 import packGame.Session;
 import packMap.Hex;
+import packMap.HexagonalMap;
 import packMap.fileOperations;
 import packPlayer.LogTypes.logEntry;
 import packPlayer.Player;
@@ -42,6 +40,7 @@ public class LobbyForm extends BaseForm {
     JPanel mainPanel = new JPanel();
     LinkedHashSet<PlayerSlot> slots = new LinkedHashSet<>();
     Hex[][] map;
+    HexagonalMap hexMap = new HexagonalMap();
     public LobbyForm() {
         super();
         Init();
@@ -56,6 +55,8 @@ public class LobbyForm extends BaseForm {
     {
         initComponents();
         InitFileChooser();
+        
+        jSplitPane2.setLeftComponent(hexMap);
         
         hexMap.setHexSide(10);
         
@@ -115,7 +116,6 @@ public class LobbyForm extends BaseForm {
         jSplitPane3 = new javax.swing.JSplitPane();
         jSplitPane1 = new javax.swing.JSplitPane();
         jSplitPane2 = new javax.swing.JSplitPane();
-        hexMap = new packMap.HexagonalMap();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -160,19 +160,6 @@ public class LobbyForm extends BaseForm {
             }
         });
 
-        javax.swing.GroupLayout hexMapLayout = new javax.swing.GroupLayout(hexMap);
-        hexMap.setLayout(hexMapLayout);
-        hexMapLayout.setHorizontalGroup(
-            hexMapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 177, Short.MAX_VALUE)
-        );
-        hexMapLayout.setVerticalGroup(
-            hexMapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jSplitPane2.setTopComponent(hexMap);
-
         jLabel1.setText("Starting Resources");
 
         jLabel2.setText("How long a round (in seconds)");
@@ -208,7 +195,7 @@ public class LobbyForm extends BaseForm {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerRoundTimeout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         jSplitPane2.setRightComponent(jPanel2);
@@ -464,7 +451,6 @@ public class LobbyForm extends BaseForm {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private packMap.HexagonalMap hexMap;
     private javax.swing.JFileChooser jFileChooserLoadMap;
     private javax.swing.JFileChooser jFileChooserLoadRaport;
     private javax.swing.JLabel jLabel1;
