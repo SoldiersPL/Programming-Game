@@ -162,7 +162,7 @@ public class LobbyForm extends BaseForm {
 
         jLabel1.setText("Starting Resources");
 
-        jLabel2.setText("How long a round (in seconds)");
+        jLabel2.setText("Time of a round (in seconds)");
 
         jSpinnerResources.setModel(new javax.swing.SpinnerNumberModel(50, 50, null, 1));
 
@@ -180,7 +180,7 @@ public class LobbyForm extends BaseForm {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
-                        .addGap(0, 12, Short.MAX_VALUE))
+                        .addGap(0, 21, Short.MAX_VALUE))
                     .addComponent(jSpinnerRoundTimeout))
                 .addContainerGap())
         );
@@ -219,7 +219,7 @@ public class LobbyForm extends BaseForm {
             }
         });
 
-        jbtnExit.setText("Exit to Main Menu");
+        jbtnExit.setText("Main Menu");
         jbtnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnExitActionPerformed(evt);
@@ -242,7 +242,7 @@ public class LobbyForm extends BaseForm {
                 .addComponent(jbtnStart)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnLoadMatch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
                 .addComponent(jbtnLoadMap)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnExit)
