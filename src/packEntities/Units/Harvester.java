@@ -9,10 +9,12 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.HashSet;
 import packEntities.Buildings.Building;
 import packEntities.Buildings.Castle;
 import packEntities.Buildings.City;
 import packEntities.EntityDescriptor;
+import packEvents.Event;
 import packMap.Direction;
 import packPlayer.LogTypes.playerLog.EntityEntryTypes.HarvestEntry;
 import packPlayer.LogTypes.playerLog.EntityEntryTypes.MakeEntry;
@@ -32,6 +34,12 @@ public class Harvester extends Unit {
         put("Castle", (player) -> new Castle(player));
     }};
     protected interface make { public Building make(Player player); }
+    
+    protected final HashSet<Event> fullListeners = new HashSet<>();
+    
+    public void addFullListener(Event listener){ fullListeners.add(listener); }
+    public void removeFullListener(Event listener){ fullListeners.remove(listener); }
+    public void clearFullListener(Event listener){ fullListeners.clear(); }
     
     public Harvester(Player player) {
         super(player);

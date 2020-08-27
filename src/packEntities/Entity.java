@@ -11,9 +11,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+import packEvents.Event;
 import packMap.Hex;
 import packPlayer.LogTypes.playerLog.EntityEntryTypes.AttackEntry;
 import packPlayer.LogTypes.playerLog.EntityEntryTypes.DiedEntry;
@@ -33,6 +35,15 @@ public abstract class Entity implements Serializable{
     public int getCost() { return Hp + 2*Att;} // Cost in resurces to make
     public int getSize() { return size; }
     public final int unitID;
+    protected final HashSet<Event> attackedListeners = new HashSet<>();
+    protected final HashSet<Event> diedListeners = new HashSet<>();
+    
+    public void addAttackedListener(Event listener){ attackedListeners.add(listener); }
+    public void removeAttackedListener(Event listener){ attackedListeners.remove(listener); }
+    public void clearAttackedListener(Event listener){ attackedListeners.clear(); }
+    public void addDiedListener(Event listener){ diedListeners.add(listener); }
+    public void removeDiedListener(Event listener){ diedListeners.remove(listener); }
+    public void clearDiedListener(Event listener){ diedListeners.clear(); }
 
     public int getHp() { return Hp; }
     private void addHp(int Hp) {
@@ -66,6 +77,7 @@ public abstract class Entity implements Serializable{
             player.addtoLog(new AttackEntry(entity, entity.hex.coordinates, this, this.hex.coordinates, player, timestamp));
             entity.addHp(-Att);
             entity.Attack(this);
+            for(Event i : attackedListeners) i.react(this);
         }
         postActionBreak();
     }
@@ -76,6 +88,7 @@ public abstract class Entity implements Serializable{
         {
             Instant timestamp = Instant.now();
             player.addtoLog(new DiedEntry(this, hex.coordinates, player, timestamp));
+            for(Event i : diedListeners) i.react(this); 
         }
         Hp = 0;
         hex.RemoveEntity(this);
@@ -172,7 +185,7 @@ public abstract class Entity implements Serializable{
         catch(Exception e)
         { }
     }
-
+    
     @Override
     public String toString() {
         return "Entity";
