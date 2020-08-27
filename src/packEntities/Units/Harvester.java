@@ -53,6 +53,11 @@ public class Harvester extends Unit {
         player.addtoLog(new HarvestEntry(this, this.hex.coordinates, player, timestamp));
         int harvestAmount = hex.getResources();
         if(resources + harvestAmount <= maxResources) resources += harvestAmount;
+        else
+        {
+            resources = maxResources;
+            for(Event i : fullListeners) i.react(this);
+        }
         postActionBreak();
         return resources;
     }
