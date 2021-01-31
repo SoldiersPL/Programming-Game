@@ -16,7 +16,7 @@ Project is created with:
 * JDK 13
 	
 ## Setup and Installation
-To run this project, either download the source code and compile it, or use the following link to download already compiled file.
+To run this project, either download the source code and compile it, or use the following link to download already compiled file.<br/>
 [Release](https://github.com/SoldiersPL/Programming-Game/releases/latest) <br/>
 Once you obtain compiled file, avoid putting it in protected location (like desktop), since anti-virus programs have tendencies to interrupt its work in there.
 Aside from that, all you have to do is to run the downloaded executable to start the program.
