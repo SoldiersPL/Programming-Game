@@ -29,8 +29,7 @@ import packPlayer.Player;
  */
 
 /**
- *
- * @author user
+ * Form serving as lobby for the game, where map can be selected, code can be written and compiled, and game itself started
  */
 public class LobbyForm extends BaseForm {
 
@@ -41,11 +40,20 @@ public class LobbyForm extends BaseForm {
     LinkedHashSet<PlayerSlot> slots = new LinkedHashSet<>();
     Hex[][] map;
     HexagonalMap hexMap = new HexagonalMap();
+
+    /**
+     * Creates new form LobbyForm
+     */
     public LobbyForm() {
         super();
         Init();
     }
 
+    /**
+     * Creates new form LobbyForm
+     * @param prev Parent Form
+     * @throws HeadlessException
+     */
     public LobbyForm(JFrame prev) throws HeadlessException {
         super(prev);
         Init();
@@ -84,6 +92,10 @@ public class LobbyForm extends BaseForm {
         filter = new FileNameExtensionFilter("Raport files", "rap");
         jFileChooserLoadRaport.setFileFilter(filter);
     }
+
+    /**
+     * Method to check if all players are ready, if yes, it enables start button
+     */
     public void CheckPlayerStatus()
     {
         if(slots.size() <=0)
@@ -287,6 +299,7 @@ public class LobbyForm extends BaseForm {
         list.setVisible(true);
         JOptionPane.showMessageDialog(null, pane);*/
         Replace(new RaportForm(report,this));
+        
     }
     private void jbtnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnStartActionPerformed
         LinkedHashSet<Object> codes = new LinkedHashSet<>();

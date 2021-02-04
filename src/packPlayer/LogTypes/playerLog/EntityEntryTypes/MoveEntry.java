@@ -12,12 +12,23 @@ import packPlayer.LogTypes.playerLog.EntityEntryBase;
 import packPlayer.Player;
 
 /**
- *
- * @author piotr
+ * Entry created when unit moves
  */
 public class MoveEntry extends EntityEntryBase{
+
+    /**
+     * Where did it move
+     */
     protected final Point targetHexCoordinates;
 
+    /**
+     * Class construcotr
+     * @param targetHexCoordinates Where did entity moved
+     * @param entity Entity that moved
+     * @param currentHexCoordinates From where did it move
+     * @param player Player that entity belongs to
+     * @param timestamp When was it made
+     */
     public MoveEntry(Point targetHexCoordinates, Entity entity, Point currentHexCoordinates, Player player, Instant timestamp) {
         super(entity, currentHexCoordinates, player, timestamp);
         this.targetHexCoordinates = targetHexCoordinates;

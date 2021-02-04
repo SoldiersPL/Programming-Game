@@ -12,19 +12,39 @@ import packPlayer.LogTypes.playerLog.EntityEntryBase;
 import packPlayer.Player;
 
 /**
- *
- * @author piotr
+ * Entry created when entity is deployed on the map
  */
 public class DeployEntry extends EntityEntryBase{
+
+    /**
+     * By who it was deployed by
+     * @see packEntities.Units.Harvester
+     * @see packEntities.Buildings.Castle
+     * @see packEntities.Buildings.City
+     */
     protected final Entity targetEntity;
+
+    /**
+     * From where it was deployed
+     */
     protected final Point targetHexCoordinates;
 
+    /**
+     * Class constructor
+     * @param targetEntity By who it was deployed by
+     * @param targetHexCoordinates From where it was deployed
+     * @param entity What unit was deployed
+     * @param currentHexCoordinates Where it was deployed
+     * @param player Who does entity belongs to
+     * @param timestamp When was it made
+     */
     public DeployEntry(Entity targetEntity, Point targetHexCoordinates, Entity entity, Point currentHexCoordinates, Player player, Instant timestamp) {
         super(entity, currentHexCoordinates, player, timestamp);
         this.targetEntity = targetEntity;
         this.targetHexCoordinates = targetHexCoordinates;
         action = actions.deploy;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());

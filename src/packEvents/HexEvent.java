@@ -9,9 +9,14 @@ import packEntities.EntityDescriptor;
 import packMap.Hex;
 
 /**
- *
- * @author user
+ * Base interface for reacting to events connected to hex
  */
 public interface HexEvent {
+
+    /**
+     * React to event
+     * @param hex Hex at where it happened
+     * @param entity Entity causing the event
+     */
     public void react(Hex hex,EntityDescriptor entity);
 }

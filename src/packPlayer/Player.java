@@ -23,11 +23,15 @@ import packEvents.ResourcesEvent;
  */
 
 /**
- *
- * @author user
+ * Class representing in-game Player
+ * @serial 
  */
 
 public class Player implements Serializable {
+
+    /**
+     * Player's ID
+     */
     public final int playerID;
     private final Color playerColor;
     /*
@@ -44,9 +48,78 @@ public class Player implements Serializable {
     DARK GREEN 106246
     BROWN 4A2A04
     */
+
+    /**
+     * Enumerator serving as Player's colors
+     * @see #playerColorsDispenser
+     */
+
     public static enum playerColors {
-        RED, BLUE , TEAL, PURPLE, YELLOW, ORANGE, GREEN, PINK, GRAY, LIGHT_BLUE, DARK_GREEN, BROWN
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        RED,
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        BLUE ,
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        TEAL,
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        PURPLE,
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        YELLOW,
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        ORANGE,
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        GREEN,
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        PINK,
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        GRAY,
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        LIGHT_BLUE,
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        DARK_GREEN,
+
+        /**
+         * @see #playerColorsDispenser
+         */
+        BROWN
     }
+
+    /**
+     * Hashmap allowing for conversion from provided player colors in PlayerColors in to colors that will be displayed in-game 
+     */
     public final static HashMap<playerColors , Color> playerColorsDispenser = new HashMap<>(){{
         put(playerColors.RED , Color.decode("#FF0303"));
         put(playerColors.BLUE , Color.decode("#0042FF"));
@@ -61,10 +134,23 @@ public class Player implements Serializable {
         put(playerColors.DARK_GREEN , Color.decode("#106246"));
         put(playerColors.BROWN , Color.decode("#4A2A04"));
     }};
+
+    /**
+     * Method of getting color by Player's ID
+     * @param id Player's ID
+     * @return Provided Player's color
+     * @see #playerColorsDispenser
+     */
     public static Color getPlayerColorByID(int id)
     {
         return playerColorsDispenser.get(playerColors.values()[id]);
     }
+
+    /**
+     * Method of getting Player's ID from his color
+     * @param color Player's color
+     * @return Player's ID
+     */
     public static int getIDbyPlayerColor(Color color)
     {
         Map<Color, playerColors> inversed = playerColorsDispenser.
@@ -75,6 +161,11 @@ public class Player implements Serializable {
     private final String playerName;
     private transient ArrayList<playerLogEntry> log = new ArrayList<>();
     private transient ReentrantLock logLock = new ReentrantLock();
+
+    /**
+     * Add entry to Player's log
+     * @param entry Entry to be added
+     */
     public final void addtoLog(playerLogEntry entry)
     {
         try
@@ -87,6 +178,10 @@ public class Player implements Serializable {
             logLock.unlock();
         }
     }
+
+    /**
+     * @return Player's log
+     */
     public final ArrayList<playerLogEntry> getLog()
     {
         return (ArrayList<playerLogEntry>)log.clone();
@@ -94,6 +189,9 @@ public class Player implements Serializable {
     
     private int resources;
     
+    /**
+     * How many players there can be at maximum, based on amount of colors
+     */
     public final static int maxPlayerCount = playerColorsDispenser.size();
     
     private final List<ResourcesEvent> listeners = new ArrayList<ResourcesEvent>();
@@ -101,18 +199,36 @@ public class Player implements Serializable {
     private final Set<Entity> units = new LinkedHashSet<>();
     private int nextID = 0;
     
-
+    /**
+     * Class constructor
+     * @param playerColor What color will Player be
+     * @param playerName What is Player's name
+     * @param playerID What will be his ID
+     */
     public Player(Color playerColor, String playerName, int playerID) {
         this.playerColor = playerColor;
         this.playerName = playerName;
         this.playerID = playerID;
     }
+
+    /**
+     * Class constructor
+     * @param playerName What is Player's name
+     * @param playerID What will be his ID
+     */
     public Player(String playerName, int playerID) {
         this.playerColor = getPlayerColorByID(playerID);
         this.playerName = playerName;
         this.playerID = playerID;
     }
 
+    /**
+     * Class constructor
+     * @param playerColor What color will Player be
+     * @param playerName What is Player's name
+     * @param playerID What will be his ID
+     * @param resources How many resources does he have
+     */
     public Player(Color playerColor, String playerName, int playerID, int resources) {
         this.playerColor = playerColor;
         this.playerName = playerName;
@@ -120,24 +236,63 @@ public class Player implements Serializable {
         this.resources = resources;
     }
 
+    /**
+     * @param resources How many resources to set to
+     */
     public void setResources(int resources) 
     { 
         this.resources = resources;
         for(ResourcesEvent i : listeners) i.react(resources);
     }
+
+    /**
+     * @param resources How many resources to add
+     */
     public void addResources(int resources) { setResources(this.resources + resources); }
+
+    /**
+     * @param resources How many resources to remove
+     */
     public void removeResources(int resources) { setResources(this.resources - resources); }
+
+    /**
+     * @return Player's color
+     */
     public Color getPlayerColor() { return playerColor; }
+
+    /**
+     * @return Player's name
+     */
     public String getPlayerName() { return playerName; }
 
+    /**
+     * @return Player's resources
+     */
     public int getResources() { return resources; }    
     
+    /**
+     * @param listener Resource Listener to be added
+     */
     public void addListener(ResourcesEvent listener) { listeners.add(listener); }
+
+    /**
+     * Add entity to Player's list
+     * @param entity Entity to be added
+     * @return ID of next entity
+     */
     public int addEntity(Entity entity ) {
         units.add(entity);
         return nextID++;
     }
+
+    /**
+     * @param listener Resource Listener to be removed
+     */
     public void removeListener(ResourcesEvent listener) { listeners.remove(listener); }
+
+    /**
+     * @return Player's ID
+     */
     public int getID() {return playerID;}
     
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException 
@@ -146,6 +301,11 @@ public class Player implements Serializable {
         log = new ArrayList<>();
         logLock = new ReentrantLock();
     }
+
+    /**
+     * Debug method to completely reset all game related parameters of this Player
+     * @param password Required password
+     */
     public void reset(String password)
     {
         if(password.equals("UshallNotpass"))
@@ -156,6 +316,12 @@ public class Player implements Serializable {
             
         }
     }
+
+    /**
+     * Debug method to completely remove entity from Player's list
+     * @param password Required password
+     * @param entity Entity to be removed
+     */
     public void removeUnit(String password, Entity entity)
     {
         if(password.equals("UshallNotpass")) units.remove(entity);

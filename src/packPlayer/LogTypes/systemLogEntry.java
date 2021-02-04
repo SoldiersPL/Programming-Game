@@ -12,14 +12,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- *
- * @author piotr
+ * Class for log entires made by system
  */
 public abstract class systemLogEntry extends logEntry{
     
+    /**
+     * Class constructor
+     * @param timestamp When was it made
+     */
     public systemLogEntry(Instant timestamp) {
         super(timestamp);
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

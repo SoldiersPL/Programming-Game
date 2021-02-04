@@ -13,16 +13,25 @@ import java.util.Locale;
 import packPlayer.Player;
 
 /**
- *
- * @author piotr
+ * Class for log entires made by Player and his entitries
  */
 public abstract class playerLogEntry extends logEntry{
+
+    /**
+     * Player that made this entry
+     */
     protected final Player player;
 
+    /**
+     * Class constructor
+     * @param player Player that made this entry
+     * @param timestamp When was it made
+     */
     public playerLogEntry(Player player, Instant timestamp) {
         super(timestamp);
         this.player = player;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

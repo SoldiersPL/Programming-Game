@@ -12,11 +12,17 @@ import packPlayer.LogTypes.playerLog.EntityEntryBase;
 import packPlayer.Player;
 
 /**
- *
- * @author piotr
+ * Entry created when unit dies
  */
 public class DiedEntry extends EntityEntryBase{
 
+    /**
+     * Class constructor
+     * @param entity What unit died
+     * @param currentHexCoordinates Where did it die
+     * @param player What player did it belong to
+     * @param timestamp When was it made
+     */
     public DiedEntry(Entity entity, Point currentHexCoordinates, Player player, Instant timestamp) {
         super(entity, currentHexCoordinates, player, timestamp);
         action = actions.died;

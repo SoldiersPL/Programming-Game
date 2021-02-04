@@ -16,8 +16,7 @@ import packPlayer.LogTypes.playerLogEntry;
 import packPlayer.LogTypes.systemLog.SessionEntry;
 
 /**
- *
- * @author piotr
+ * Class responsible for running Player's code, keeping up the set rules and assembling raports
  */
 public class Session {
     private final int timeLimit;
@@ -25,6 +24,12 @@ public class Session {
     private final LinkedHashSet<Object> codes;
     private final TreeSet<logEntry> raport = new TreeSet<>();;
 
+    /**
+     * Class constructor
+     * @param timeLimit How long will this round be
+     * @param slots How many players will there be
+     * @param codes Player's codes
+     */
     public Session(int timeLimit, LinkedHashSet<PlayerSlot> slots, LinkedHashSet<Object> codes) {
         this.timeLimit = timeLimit;
         this.slots = slots;
@@ -45,6 +50,9 @@ public class Session {
         raport.add(new SessionEntry(comment, Instant.now()));
     }
     
+    /**
+     * Method to start the match
+     */
     public void run()
     {
         //Preparations for running the code
@@ -101,6 +109,10 @@ public class Session {
         fillInRaport();
     }
 
+    /**
+     * Get compiled raports created after using Run method
+     * @return Compiled raports from session
+     */
     public TreeSet<logEntry> getRaport() {
         return raport;
     }

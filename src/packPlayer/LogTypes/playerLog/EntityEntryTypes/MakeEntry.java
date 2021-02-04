@@ -12,17 +12,32 @@ import packPlayer.LogTypes.playerLog.EntityEntryBase;
 import packPlayer.Player;
 
 /**
- *
- * @author piotr
+ * Entry made when entity was created
  */
 public class MakeEntry extends EntityEntryBase{
+
+    /**
+     * What entity created it
+     * @see packEntities.Units.Harvester
+     * @see packEntities.Buildings.Castle
+     * @see packEntities.Buildings.City
+     */
     protected final Entity targetEntity;
 
+    /**
+     * Class construcotr
+     * @param targetEntity Entity that created it
+     * @param entity Created entity
+     * @param currentHexCoordinates Where was it created
+     * @param player Player that entity belongs to
+     * @param timestamp When was it made
+     */
     public MakeEntry(Entity targetEntity, Entity entity, Point currentHexCoordinates, Player player, Instant timestamp) {
         super(entity, currentHexCoordinates, player, timestamp);
         this.targetEntity = targetEntity;
         action = actions.make;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());

@@ -6,6 +6,9 @@ import java.awt.image.BufferedImage;
 import packEntities.EntityDescriptor;
 import packMap.Terrain.Plains;
 
+/**
+ * Class representing a map, it servest both to keep as binder for all hexes in it, and to draw the graphical components representing the map
+ */
 public class HexagonalMap extends JPanel {
     private int columns = 2; // Number of columns
     private int rows = 2; // Number of rows
@@ -19,6 +22,9 @@ public class HexagonalMap extends JPanel {
     private Hex[][] map;
     private BufferedImage savedImage;
 
+    /**
+     * Class constructor
+     */
     public HexagonalMap()
     {
         CalculateHexValues();
@@ -39,6 +45,10 @@ public class HexagonalMap extends JPanel {
         }
     }
 
+    /**
+     * Method to initialize a new map by creating new pointer and hexes based on wanted size
+     * Use this method after every changed to the map's size
+     */
     public final void initiateMap() 
     {
         map = new Hex[columns][rows];
@@ -118,6 +128,10 @@ public class HexagonalMap extends JPanel {
                 drawHex(savedImageInterface, column, row);
     }
 
+    /**
+     * Base DrawComponent, that also re-creates the map if needed and draws it on component
+     * @see JFrame#paintComponents(java.awt.Graphics)
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
@@ -125,7 +139,10 @@ public class HexagonalMap extends JPanel {
         g.drawImage(savedImage, 0, 0, this);
     }
     
-
+    /**
+     * Sets prefered size based on amount and sizes of hexes
+     * @see JFrame#getPreferredSize()
+     */
     @Override
     public Dimension getPreferredSize() {
         int panelWidth = columns * hexGridWidth + hexOffset;
@@ -133,6 +150,12 @@ public class HexagonalMap extends JPanel {
         return new Dimension(panelWidth, panelHeight);
     }
 
+    /**
+     * Method to calculate coordinates for corners that will make up hex
+     * @param column What column is hex in
+     * @param row What row is hex in
+     * @return Polygon used to then draw the hex
+     */
     public Polygon buildHexagon(int column, int row) {
         Polygon hex = new Polygon();
         Point origin = tileToPixel(column, row);
@@ -144,6 +167,16 @@ public class HexagonalMap extends JPanel {
         hex.addPoint(origin.x, origin.y + hexApotheme);
         return hex;
     }
+
+    /**
+     * Method to calculate coordinates for corners that will make up hex
+     * This version is used in outside classes
+     * @param hexSide How long is hex's side
+     * @param origin Hex's center point
+     * @param column What column is hex in
+     * @param row What row is hex in
+     * @return Polygon used to then draw the hex
+     */
     public static Polygon buildHexagon(int hexSide, Point origin , int column, int row) {
         int hexApotheme = (int) (hexSide * Math.cos(Math.PI / 6));
         int hexOffset = (int) (hexSide * Math.sin(Math.PI / 6));
@@ -160,6 +193,17 @@ public class HexagonalMap extends JPanel {
         hex.addPoint(origin.x, origin.y + hexApotheme);
         return hex;
     }
+
+    /**
+     * Method used to hex
+     * This version is used in outside classes
+     * @param hexSide How long is hex's side
+     * @param origin Hex's center point
+     * @param column What column is hex in
+     * @param row What row is hex in
+     * @param hexObj What hex will be drawn
+     * @return Image representing hex
+     */
     public static BufferedImage drawHexagon(int hexSide, Point origin , int column, int row, Hex hexObj) {
         Polygon hex = buildHexagon(hexSide, origin, column, row);
         Color base = hexObj.baseColor, border = hexObj.borderColor;
@@ -173,6 +217,12 @@ public class HexagonalMap extends JPanel {
         return img;
     }
 
+    /**
+     * Method used to calculate where is hex on the image based on coordinates
+     * @param column Hex's coordinates
+     * @param row Hex's coordinates
+     * @return Hex's coordinates on the image 
+     */
     public Point tileToPixel(int column, int row) {
         Point pixel = new Point();
         pixel.x = hexGridWidth * column;
@@ -181,6 +231,12 @@ public class HexagonalMap extends JPanel {
         return pixel;
     }
 
+    /**
+     * Method used to calculate hex's coordinates based on where is provided pixel
+     * @param x Pixel's coordinates
+     * @param y Pixel's coordinates
+     * @return Hex's coordinates on the map
+     */
     public Point pixelToTile(int x, int y) {
         double hexRise = (double) hexApotheme / (double) hexOffset;
         Point p = new Point(x / hexGridWidth, y / hexRectHeight);
@@ -204,58 +260,98 @@ public class HexagonalMap extends JPanel {
         return new Point(direction.getNeighborCoordinates(p));
     }
 
+    /**
+     * Method serving to check if hex provided is within the map's limits
+     * @param coordinates Hex's coordinates
+     * @return True if its within the map, False if outside it
+     */
     public boolean tileIsWithinBoard(Point coordinates) {
         int column = coordinates.x;
         int row = coordinates.y;
         return (column >= 0 && column < columns) && (row >= 0 && row < rows);
     }
     
-    
-
+    /**
+     * @return How many columns does this map have
+     */
     public int getColumns() {
         return columns;
     }
 
+    /**
+     * @return How many rows does this map have
+     */
     public int getRows() {
         return rows;
     }
 
+    /**
+     * @return How long is hex's side
+     */
     public int getHexSide() {
         return hexSide;
     }
 
+    /**
+     * @return Distance from left horizontal vertex to vertical axis
+     */
     public int getHexOffset() {
         return hexOffset;
     }
 
+    /**
+     * @return Radius of inscribed circumference of the hex
+     */
     public int getHexApotheme() {
         return hexApotheme;
     }
 
+    /**
+     * @return Width of the circumscribed rectangle
+     */
     public int getHexRectWidth() {
         return hexRectWidth;
     }
 
+    /**
+     * @return Height of the circumscribed rectangle
+     */
     public int getHexRectHeight() {
         return hexRectHeight;
     }
 
+    /**
+     * @return HexOffset + HexSide (b + s)
+     */
     public int getHexGridWidth() {
         return hexGridWidth;
     }
 
+    /**
+     * @param columns How many columns if map gonna have
+     */
     public void setColumns(int columns) {
         this.columns = columns;
         CalculateHexValues();
         resetMap();
     }
 
+    /**
+     * @param rows How many rows if map gonna have
+     */
     public void setRows(int rows) {
         this.rows = rows;
         CalculateHexValues();
         resetMap();
     }
     
+    /**
+     * Set map's sizes
+     * @param columns How many columns if map gonna have
+     * @param rows How many rows if map gonna have
+     * @see #setRows(int) 
+     * @see #setColumns(int) 
+     */
     public void setMapSize(int columns, int rows)
     {
         this.columns = columns;
@@ -264,23 +360,46 @@ public class HexagonalMap extends JPanel {
         resetMap();
     }
 
+    /**
+     * Set how long will be hex's side
+     * @param hexSide How long will be hex's side
+     */
     public void setHexSide(int hexSide) {
         this.hexSide = hexSide;
         CalculateHexValues();
     }
 
+    /**
+     * @return Pointer to the table representing map
+     */
     public Hex[][] getMap() {
         return map;
     }
+
+    /**
+     * Get specific hex from provided coordinates
+     * @param Column Hex's coordinates
+     * @param Row Hex's coordinates
+     * @return Pointer to the requested hex
+     */
     public Hex getHex(int Column, int Row)
     {
         return map[Column][Row];
     }
+
+    /**
+     * Get specific hex from provided coordinates
+     * @param coordinates Hex's coordinates
+     * @return Pointer to the requested hex
+     */
     public Hex getHex(Point coordinates)
     {
         return getHex(coordinates.x, coordinates.y);
     }
 
+    /**
+     * @param map Already created map
+     */
     public void setMap(Hex[][] map) {
         int mapColumns = map.length, mapRows = map[0].length;
         if(mapColumns > 0 && mapRows > 0 )
@@ -291,6 +410,13 @@ public class HexagonalMap extends JPanel {
              redrawMap();
         }
     }
+
+    /**
+     * Replace hex in provided coordinates with provided one
+     * @param hex Provided hex
+     * @param Column Coordinates for hex to be placed in
+     * @param Row Coordinates for hex to be placed in
+     */
     public void setHex(Hex hex, int Column, int Row)
     {
         if(Column < 0 || Column >= map.length) return;
@@ -298,15 +424,30 @@ public class HexagonalMap extends JPanel {
         map[Column][Row] = hex;
         redrawMap();
     }
+
+    /**
+     * Replace hex in provided coordinates with provided one
+     * @param hex Provided hex
+     * @param coordinates Coordinates for hex to be placed in
+     */
     public void setHex(Hex hex, Point coordinates)
     {
         setHex(hex, coordinates.x, coordinates.y);
     }
+
+    /**
+     * Resets map back to its initial, Planes filed form
+     */
     public void resetMap()
     {
         initiateMap();
         redrawMap();
     }
+
+    /**
+     * Forcibly redraw the component
+     * @see JPanel#repaint() 
+     */
     public void redrawMap()
     {
         drawMap();

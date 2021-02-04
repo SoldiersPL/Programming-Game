@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Label;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -35,14 +36,10 @@ import packPlayer.PlayerGetter;
  */
 
 /**
- *
- * @author user
+ *  Panel representing player in LobbyForm, contains various objects connected to him, and also compiles the code he wrote
  */
 public class PlayerSlot extends javax.swing.JPanel {
 
-    /**
-     * Creates new form PlayerSlot
-     */
     private Player player = null;
     private String compiledClassName = null;
     private City hq = null;
@@ -52,6 +49,9 @@ public class PlayerSlot extends javax.swing.JPanel {
     private Path compiledCode;
     private final LobbyForm mainForm;
 
+    /**
+     * @param mainForm Form it belongs to
+     */
     public PlayerSlot(LobbyForm mainForm)
     {
         initComponents();
@@ -73,6 +73,11 @@ public class PlayerSlot extends javax.swing.JPanel {
         jButtonSetCode.setEnabled(playerStatus);
         jtxtPlayerName.setEnabled(playerStatus);
     }
+
+    /**
+     * Set player and initiate the panel
+     * @param player Player being represented by panel
+     */
     public void setPlayer(Player player)
     {
         if(jPanelColor == null || (this.player != null && this.player.equals(player))) return;
@@ -80,9 +85,25 @@ public class PlayerSlot extends javax.swing.JPanel {
         compiledClassName = String.format("CompClass%d", player.getID());
         Init();
     }
+
+    /**
+     * @return Player being represented by panel
+     */
     public Player getPlayer() {return player;}
+
+    /**
+     * @return Get status of Player's code
+     */
     public Boolean getStatus() {return current == status.ready;}
+
+    /**
+     * @return Get city acting as Player's first entity on the map
+     */
     public City getHq() { return hq; }
+
+    /**
+     * @param hq Set city acting as Player's first entity on the map
+     */
     public void setHq(City hq) { this.hq = hq; }
     private void checkStatus()
     {
@@ -192,6 +213,9 @@ public class PlayerSlot extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Compiles the code written by player
+     */
     private void compile()
     {
         current = status.compiling;
@@ -251,6 +275,10 @@ public class PlayerSlot extends javax.swing.JPanel {
             checkStatus();
         }
     }
+
+    /**
+     * @return Pointer to object created based on Player's code
+     */
     public Object getCompiledCode()
     {
         if(compiledCode == null || player == null || hq == null) return null;
@@ -278,13 +306,16 @@ public class PlayerSlot extends javax.swing.JPanel {
             return null;
         }
     }
-    
+    /**
+     * Sets base template to be used by player as a base for his code
+     */
     private void setTemplate()
     {
         try{
+            InputStream stream = PlayerSlot.class.getResourceAsStream("CodeInputBaseForm.txt");
+            
             URL url = getClass().getResource("CodeInputBaseForm.txt");
-            Path dest = Paths.get(url.toURI());
-            code = new String(Files.readAllBytes(dest));
+            code = new String(stream.readAllBytes());
             code = code.replace("CompiledClass", compiledClassName);
             current = status.notReady;
         }

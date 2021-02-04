@@ -11,18 +11,22 @@ import packPlayer.LogTypes.playerLogEntry;
 import packPlayer.Player;
 
 /**
- *
- * @author piotr
+ * Class representing comments manually added by the player
  */
 public class PlayerComment extends playerLogEntry {
     String comment;
 
+    /**
+     * Class constructor
+     * @param comment Comment to be recorded
+     * @param player Player that have made the entry
+     * @param timestamp When was it made
+     */
     public PlayerComment(String comment, Player player, Instant timestamp) {
         super(player, timestamp);
         this.comment = comment;
     }
     
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());

@@ -22,30 +22,71 @@ import packPlayer.LogTypes.playerLog.EntityEntryTypes.ReturnHarvestEntry;
 import packPlayer.Player;
 
 /**
- *
- * @author user
+ * Class representing Harvester type of unit.
+ * It can harvest resources from different hexes on map and can construct buildings, fairy weak in combat
  */
 public class Harvester extends Unit {
 
     private int resources;
     private final int maxResources = 20;
+
+    /**
+     * Hashmap that posseses all buildable buildings in game,
+     * when creating more types of units, add units to this Hashmap
+     */
     protected final static HashMap<String , make> buildableUnits = new HashMap<>(){{
         put("City", (player) -> new City(player));
         put("Castle", (player) -> new Castle(player));
     }};
-    protected interface make { public Building make(Player player); }
+
+    /**
+     * Serves as base interface for make series of methods
+     */
+    protected interface make { 
+
+        /**
+         * Serves as base interface for make series of methods
+         * @param player Player made unit will belong to
+         * @return Created unit
+         */
+        public Building make(Player player); }
     
+    /**
+     * Set of added listeners for reaction when unit is at limit of resources
+     */
     protected final HashSet<Event> fullListeners = new HashSet<>();
     
+    /**
+     * Adds listener to the list in case that unit is at limit of resources it can gather
+     * @param listener Listener to be added
+     */
     public void addFullListener(Event listener){ fullListeners.add(listener); }
+
+    /**
+     * Removes listener from the list in case that unit is at limit of resources it can gather
+     * @param listener Listener to be added
+     */
     public void removeFullListener(Event listener){ fullListeners.remove(listener); }
-    public void clearFullListener(Event listener){ fullListeners.clear(); }
+
+    /**
+     * Cleans the set of listeners
+     */
+    public void clearFullListener(){ fullListeners.clear(); }
     
+    /**
+     * Constructor
+     * @param player Player that this entity belongs to 
+     */
     public Harvester(Player player) {
         super(player);
         Hp = 5;
         Att = 1;
     }
+
+    /**
+     * Harvests resources from hex this unit is on and adds it to this unit
+     * @return How much resources have been harvested
+     */
     public final int Harvest()
     {
         if(Hp <= 0 || hex == null) return 0;
@@ -61,6 +102,11 @@ public class Harvester extends Unit {
         postActionBreak();
         return resources;
     }
+
+    /**
+     * Attempts returning resources to player, has to be on same hex as one of friendly buildings 
+     * @return True if succeeded, false if failed due to lack of friendly building
+     */
     public final boolean ReturnHarvest()
     {
         if(Hp <= 0 || hex == null) return false;
@@ -87,6 +133,14 @@ public class Harvester extends Unit {
         }
         return false;
     }
+
+    /**
+     * Attempt constructing a unitType building in provided coordinates
+     * @param unitType What building to construct
+     * @param column Where to make building
+     * @param row Where to make building
+     * @return True if succeeded, false if failed due one of various reasons
+     */
     public Building Construct(String unitType , int column, int row)
     {
         Building building = null;
@@ -105,19 +159,41 @@ public class Harvester extends Unit {
         }
         return building;
     }
+
+    /**
+     * Attempt constructing a unitType building in provided coordinates
+     * @param unitType What building to construct
+     * @param coordinates Where to make building
+     * @return True if succeeded, false if failed due one of various reasons
+     */
     public Building Construct(String unitType , Point coordinates)
     {
         return Construct(unitType, coordinates.x, coordinates.y);
     }
+
+    /**
+     * Attempt constructing a unitType building in provided coordinates
+     * @param buildingType What building to construct
+     * @param direction Where to make building
+     * @return True if succeeded, false if failed due one of various reasons
+     */
     public Building Construct(String buildingType , Direction direction)
     {
         return Construct(buildingType, direction.getNeighborCoordinates(hex.coordinates));
     }
 
+    /**
+     * Generates ilustration for this unit
+     * @return Image representing this unit on map
+     */
     @Override
     public BufferedImage getIlustration() {
         return getIlustration("pickaxe.png");
     }
+
+    /**
+     * @return Unit name
+     */
     @Override
     public String toString() {
         return "Harvester";

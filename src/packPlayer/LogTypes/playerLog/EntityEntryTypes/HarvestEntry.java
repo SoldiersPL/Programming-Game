@@ -12,11 +12,18 @@ import packPlayer.LogTypes.playerLog.EntityEntryBase;
 import packPlayer.Player;
 
 /**
- *
- * @author piotr
+ * Entry created when entity have harvested resources from hex
+ * @see packEntities.Units.Harvester
  */
 public class HarvestEntry extends EntityEntryBase{
 
+    /**
+     * Class constructor
+     * @param entity Entity that have harvested resources
+     * @param currentHexCoordinates Wher were they harvested
+     * @param player Played that entity belongs to
+     * @param timestamp When was it made
+     */
     public HarvestEntry(Entity entity, Point currentHexCoordinates, Player player, Instant timestamp) {
         super(entity, currentHexCoordinates, player, timestamp);
         action = actions.harvest;

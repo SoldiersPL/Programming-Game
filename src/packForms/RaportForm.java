@@ -17,8 +17,7 @@ import packMap.fileOperations;
 import packPlayer.LogTypes.logEntry;
 
 /**
- *
- * @author piotr
+ * From serving to show post-game raports
  */
 public class RaportForm extends BaseForm {
 
@@ -27,47 +26,103 @@ public class RaportForm extends BaseForm {
      */
     private final TreeSet<logEntry> report;
 
+    /**
+     * Creates new form RaportForm
+     * @param report Raport to display
+     * @throws HeadlessException
+     * @see JFrame#JFrame() 
+     */
     public RaportForm(TreeSet<logEntry> report) throws HeadlessException {
         this.report = report;
         Init();
     }
 
+    /**
+     * Creates new form RaportForm
+     * @param report Raport to display
+     * @param gc
+     * @see JFrame#JFrame(java.awt.GraphicsConfiguration) ) 
+     */
     public RaportForm(TreeSet<logEntry> report, GraphicsConfiguration gc) {
         super(gc);
         this.report = report;
         Init();
     }
 
+    /**
+     * Creates new form RaportForm
+     * @param report Raport to display
+     * @param title 
+     * @throws HeadlessException
+     * @see JFrame#JFrame(java.lang.String) 
+     */
     public RaportForm(TreeSet<logEntry> report, String title) throws HeadlessException {
         super(title);
         this.report = report;
         Init();
     }
 
+    /**
+     * Creates new form RaportForm
+     * @param report Raport to display
+     * @param title
+     * @param gc
+     * @see JFrame#JFrame(java.lang.String, java.awt.GraphicsConfiguration) 
+     */
     public RaportForm(TreeSet<logEntry> report, String title, GraphicsConfiguration gc) {
         super(title, gc);
         this.report = report;
         Init();
     }
 
+    /**
+     * Creates new form RaportForm
+     * @param report Raport to display
+     * @param prev Parent Frame
+     * @throws HeadlessException
+     * @see JFrame#JFrame() 
+     */
     public RaportForm(TreeSet<logEntry> report, JFrame prev) throws HeadlessException {
         super(prev);
         this.report = report;
         Init();
     }
 
+    /**
+     * Creates new form RaportForm
+     * @param report Raport to display
+     * @param prev Parent Frame
+     * @param gc
+     * @see JFrame#JFrame(java.awt.GraphicsConfiguration) 
+     */
     public RaportForm(TreeSet<logEntry> report, JFrame prev, GraphicsConfiguration gc) {
         super(prev, gc);
         this.report = report;
         Init();
     }
 
+    /**
+     * Creates new form RaportForm
+     * @param report Raport to display
+     * @param prev Parent Frame
+     * @param title
+     * @throws HeadlessException
+     * @see JFrame#JFrame(java.lang.String) 
+     */
     public RaportForm(TreeSet<logEntry> report, JFrame prev, String title) throws HeadlessException {
         super(prev, title);
         this.report = report;
         Init();
     }
 
+    /**
+     * Creates new form RaportForm
+     * @param report Raport to display
+     * @param prev Parent Frame
+     * @param title
+     * @param gc
+     * @see JFrame#JFrame(java.lang.String, java.awt.GraphicsConfiguration) 
+     */
     public RaportForm(TreeSet<logEntry> report, JFrame prev, String title, GraphicsConfiguration gc) {
         super(prev, title, gc);
         this.report = report;

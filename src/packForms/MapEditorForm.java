@@ -27,6 +27,10 @@ import packForms.packComponents.NewMap;
 import packForms.packComponents.TerrainListRenderer;
 import packMap.Terrain.StartingHex;
 import packPlayer.Player;
+
+/**
+ * Form serving as Map Editor
+ */
 public class MapEditorForm extends BaseForm {
 
     /**
@@ -38,11 +42,20 @@ public class MapEditorForm extends BaseForm {
     boolean fullHouse = false;
     boolean processingClick = false; // in case of very fast clicks
     HexagonalMap hexMap = new HexagonalMap();
+
+    /**
+     * Creates new form MapEditorForm
+     */
     public MapEditorForm() {
         super();
         initForm();
     }
 
+    /**
+     * Creates new form MapEditorForm
+     * @param prev Parent Form
+     * @throws HeadlessException
+     */
     public MapEditorForm(JFrame prev) throws HeadlessException {
         super(prev);
         initForm();
@@ -296,7 +309,7 @@ public class MapEditorForm extends BaseForm {
         {
             for(int j = 0; j< map[0].length ; ++j)
             {
-                Hex hex = map[j][i];
+                Hex hex = map[i][j];
                 if(hex.getFreeSlots() < hex.InitSlots())
                 {
                     for(EntityDescriptor e : hex.getEntities())

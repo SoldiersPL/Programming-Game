@@ -13,17 +13,26 @@ import java.util.concurrent.locks.ReentrantLock;
 import packPlayer.Player;
 
 /**
- *
- * @author user
+ * Class representing City type of building
+ * It can create Worker units
  */
 public class City extends Building{
 
+    /**
+     * Constructor
+     * @param player Player that this entity belongs to
+     */
     public City(Player player) {
         super(player);
         Hp = 30;
         Att = 0;
         permitedBuildableUnits.put("Harvester", true);
     }
+
+    /**
+     * Generates ilustration for this unit
+     * @return Image representing this unit on map
+     */
     @Override
     public BufferedImage getIlustration() {
         return getIlustration("house.png");
@@ -36,6 +45,10 @@ public class City extends Building{
         permitedBuildableUnits = new HashMap<>();
         permitedBuildableUnits.put("Harvester", true);
     }
+
+    /**
+     * @return Unit name
+     */
     @Override
     public String toString() {
         return "City";

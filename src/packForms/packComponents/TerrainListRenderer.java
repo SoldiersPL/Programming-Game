@@ -16,11 +16,14 @@ import javax.swing.ListCellRenderer;
 import packMap.Hex;
 import packMap.HexagonalMap;
 /**
- *
- * @author mariat
+ * Renderer for list terrains used by MainEditorForm
  */
 public class TerrainListRenderer extends JLabel implements ListCellRenderer<Hex>
 {
+
+    /**
+     * @param list List to be rendered
+     */
     @Override
     public Component getListCellRendererComponent(JList<? extends Hex> list,Hex hex,int index,boolean isSelected,boolean hasFocus) 
     {

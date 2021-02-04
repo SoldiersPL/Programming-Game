@@ -6,9 +6,13 @@
 package packEvents;
 
 /**
- *
- * @author user
+ * Base interface for reacting to events connected to player's resources
  */
 public interface ResourcesEvent {
+
+    /**
+     * React to event
+     * @param resources How much resources does player possesed at point of event
+     */
     public void react(int resources);
 }

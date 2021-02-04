@@ -8,8 +8,7 @@ package packForms.packComponents;
 import java.text.ParseException;
 
 /**
- *
- * @author piotr
+ * Panel for deciding size of new map
  */
 public class NewMap extends javax.swing.JPanel {
 
@@ -19,6 +18,10 @@ public class NewMap extends javax.swing.JPanel {
     public NewMap() {
         initComponents();
     }
+
+    /**
+     * @return How many columns
+     */
     public int getColumns()
     {
         try{
@@ -27,6 +30,10 @@ public class NewMap extends javax.swing.JPanel {
         catch(ParseException e) {}
         return (int) jSpinColumns.getValue();
     }
+
+    /**
+     * @return How many rows
+     */
     public int getRows()
     {
         try{

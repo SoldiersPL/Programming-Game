@@ -10,18 +10,21 @@ import packPlayer.LogTypes.logEntry;
 import packPlayer.LogTypes.systemLogEntry;
 
 /**
- *
- * @author piotr
+ * Class used by system to make entires related to specific session, like its start or end
  */
 public class SessionEntry extends systemLogEntry {
     String comment;
 
+    /**
+     * Class constructor
+     * @param comment Comment to be recorded
+     * @param timestamp When was it made
+     */
     public SessionEntry(String comment, Instant timestamp) {
         super(timestamp);
         this.comment = comment;
     }
     
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());

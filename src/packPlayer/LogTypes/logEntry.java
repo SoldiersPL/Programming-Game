@@ -9,15 +9,28 @@ import java.io.Serializable;
 import java.time.Instant;
 
 /**
- *
- * @author piotr
+ * Class serving as base for all entries made in log, later assembled in to post game raport
+ * @serial 
  */
 public abstract class logEntry implements Comparable<logEntry> , Serializable{
+
+    /**
+     * When was this entry made
+     */
     protected final Instant timestamp;
+
+    /**
+     * Class constructor
+     * @param timestamp When was it made
+     */
     public logEntry(Instant timestamp)
     {
         this.timestamp = timestamp;
     }
+
+    /**
+     * @return When was this entry made
+     */
     public Instant getTimestamp() {
         return timestamp;
     }

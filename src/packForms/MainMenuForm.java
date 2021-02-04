@@ -8,8 +8,8 @@ package packForms;
  */
 
 /**
- *
- * @author user
+ * Form serving as Main Menu
+ * Mostly exists to redirect to other areas
  */
 public class MainMenuForm extends BaseForm {
 

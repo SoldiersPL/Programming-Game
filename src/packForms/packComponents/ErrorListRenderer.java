@@ -11,11 +11,13 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 /**
- *
- * @author piotr
+ * Renderer for list of errors made during Player's code compilaton
  */
 public class ErrorListRenderer  extends JLabel implements ListCellRenderer<String> {
 
+    /**
+     * @param list List to be rendered
+     */
     @Override
     public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
         setText(value);

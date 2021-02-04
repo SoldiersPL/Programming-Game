@@ -17,10 +17,15 @@ import javax.swing.JOptionPane;
 import packPlayer.LogTypes.logEntry;
 
 /**
- *
- * @author piotr
+ * Class dealing with loading all serialized classes in this project
  */
 public final class fileOperations {
+
+    /**
+     * Load provided file as a Map
+     * @param file Path to serialized Map
+     * @return De-serialized Map
+     */
     final public static Hex[][] Load(File file)
     {
         Hex[][] map = null;
@@ -47,6 +52,12 @@ public final class fileOperations {
         catch(ClassNotFoundException e){}
         return map;
     }
+
+    /**
+     * Save provided map as a file in provided location
+     * @param file Location to be saved in
+     * @param map Map to be saved
+     */
     final public static void Save(File file , Hex[][] map)
     {
         try{
@@ -77,6 +88,12 @@ public final class fileOperations {
             JOptionPane.showMessageDialog(null,sb.toString());
         }
     }
+
+    /**
+     * Load provided file as a post game raport
+     * @param file Path to serialized raport
+     * @return De-serialized Raport
+     */
     final public static TreeSet<logEntry> LoadRaport(File file)
     {
         TreeSet<logEntry> report = null;
@@ -103,6 +120,12 @@ public final class fileOperations {
         catch(ClassNotFoundException e){}
         return report;
     }
+
+    /**
+     * Save post game raport in provided location
+     * @param file Provided location
+     * @param report Raport to be saved
+     */
     final public static void SaveRaport(File file , TreeSet<logEntry> report)
     {
         try{

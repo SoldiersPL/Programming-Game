@@ -13,17 +13,26 @@ import java.util.concurrent.locks.ReentrantLock;
 import packPlayer.Player;
 
 /**
- *
- * @author user
+ * Class representing Castle type of building
+ * It is stronger then City and can make Warrior type of unit
  */
 public class Castle extends Building{
     
+    /**
+     * Constructor
+     * @param player Player that this entity belongs to
+     */
     public Castle(Player player) {
         super(player);
         Hp = 50;
         Att = 5;
         permitedBuildableUnits.put("Warrior", true);
     }
+
+    /**
+     * Generates ilustration for this unit
+     * @return Image representing this unit on map
+     */
     @Override
     public BufferedImage getIlustration() {
         return getIlustration("tower.png");
@@ -36,6 +45,10 @@ public class Castle extends Building{
         permitedBuildableUnits = new HashMap<>();
         permitedBuildableUnits.put("Warrior", true);
     }
+
+    /**
+     * @return Unit name
+     */
     @Override
     public String toString() {
         return "Castle";

@@ -9,9 +9,17 @@ import packMap.Direction;
 import packEntities.*;
 import packEntities.Buildings.*;
 import packEntities.Units.*;
+import packEvents.*;
 
+/**
+ *
+ * @author piotr
+ */
 public class CompiledClass extends BaseObject {
 
+    /**
+     *
+     */
     @Override
     public void run() {
         Hex enemyHQCoordinates = null;
@@ -121,6 +129,33 @@ public class CompiledClass extends BaseObject {
              catch(Exception e) {}
         }
         player.addCommentToLog("I'm done");
+    }
+    
+    /**
+     * Obsługuje stworzenie, podstawową konfiguracje i automatyzacje zbieracza
+     */
+    private void HarvesterThread()
+    {
+        // Stworzenie jednostki typu Harvester
+        Harvester harvester = (Harvester)hq.MakeAndDeploy("Harvester", Direction.S);
+        
+        //Stworzenie zachowania na wypadek, jeżeli ta jednostka zostałaby zaatakowana
+        Event attackedListener = (Entity entity) -> {
+            //Jeżeli ta jednostka otrzyma obrażenia, wycofaj się do bazy
+            BackToBase((Unit)entity);
+        };
+        //Dodanie stworzonej reakcji do jednostki
+        harvester.addAttackedListener(attackedListener);
+        Harvest(harvester);
+    }
+    
+    private void BackToBase(Unit unit)
+    {
+        
+    }
+    private void Harvest(Harvester harvester)
+    {
+        
     }
     
 }

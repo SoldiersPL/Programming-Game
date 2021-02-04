@@ -8,9 +8,13 @@ package packEvents;
 import packEntities.Entity;
 
 /**
- *
- * @author user
+ * Base interface for reacting to miscellaneous events
  */
 public interface Event {
+
+    /**
+     * React to event
+     * @param entity Entity to be source of event
+     */
     public void react(Entity entity);
 }

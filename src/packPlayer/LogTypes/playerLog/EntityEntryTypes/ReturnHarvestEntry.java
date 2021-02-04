@@ -12,16 +12,23 @@ import packPlayer.LogTypes.playerLog.EntityEntryBase;
 import packPlayer.Player;
 
 /**
- *
- * @author piotr
+ * Entry created when resources had been returned
+ * @see packEntities.Units.Harvester
  */
 public class ReturnHarvestEntry extends EntityEntryBase{
 
+    /**
+     * Class constructor
+     * @param entity Entity that have returned harvest
+     * @param currentHexCoordinates Where have it returned harvest
+     * @param player Player that entity belongs to
+     * @param timestamp When was it made
+     */
     public ReturnHarvestEntry(Entity entity, Point currentHexCoordinates, Player player, Instant timestamp) {
         super(entity, currentHexCoordinates, player, timestamp);
         action = actions.returnRes;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());

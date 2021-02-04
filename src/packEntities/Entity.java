@@ -22,50 +22,157 @@ import packPlayer.LogTypes.playerLog.EntityEntryTypes.DiedEntry;
 import packPlayer.Player;
 
 /**
- *
- * @author user
+ * Class representing all units belonging to players
+ * @serial 
  */
 public abstract class Entity implements Serializable{
+
+    /**
+     * What player it belongs to
+     */
     protected final Player player; // Player object
-    protected int Hp; // Remaining health of unit
-    protected int Att; // Attack of unit
-    protected int size; // How many slots unit take
-    protected Hex hex; // Hex that unit is currently in
+
+    /**
+     * Remaining health of unit
+     */
+    protected int Hp;
+
+    /**
+     * Attack points of unit
+     */
+    protected int Att;
+
+    /**
+     * How many slots in hex does unit take
+     */
+    protected int size;
+
+    /**
+     * Hex that unit is currently in
+     */
+    protected Hex hex;
+
+    /**
+     * Image representing this unit
+     */
     protected transient BufferedImage ilustration;
+
+    /**
+     * Returns how much would making this unit cost
+     * @return Cost of production
+     */
     public int getCost() { return Hp + 2*Att;} // Cost in resurces to make
+
+    /**
+     * @return Size of unit
+     */
     public int getSize() { return size; }
+
+    /**
+     * ID of unit
+     */
     public final int unitID;
+
+    /**
+     * Set of added listeners for reaction when unit is attacked
+     */
     protected final HashSet<Event> attackedListeners = new HashSet<>();
+
+    /**
+     * Set of added listeners for reaction when unit had died
+     */
     protected final HashSet<Event> diedListeners = new HashSet<>();
     
+    /**
+     * Adds listener to the list in case that unit is attacked
+     * @param listener Listener to be added
+     */
     public void addAttackedListener(Event listener){ attackedListeners.add(listener); }
-    public void removeAttackedListener(Event listener){ attackedListeners.remove(listener); }
-    public void clearAttackedListener(Event listener){ attackedListeners.clear(); }
-    public void addDiedListener(Event listener){ diedListeners.add(listener); }
-    public void removeDiedListener(Event listener){ diedListeners.remove(listener); }
-    public void clearDiedListener(Event listener){ diedListeners.clear(); }
 
+    /**
+     * Removes listener from the list in case that unit is attacked
+     * @param listener Listener to be removed
+     */
+    public void removeAttackedListener(Event listener){ attackedListeners.remove(listener); }
+
+    /**
+     * Cleans set of listeners
+     */
+    public void clearAttackedListener(){ attackedListeners.clear(); }
+
+    /**
+     * Adds listener to the list in case that unit has died
+     * @param listener Listener to be removed
+     */
+    public void addDiedListener(Event listener){ diedListeners.add(listener); }
+
+    /**
+     * Removes listener from the list in case that unit has died
+     * @param listener Listener to be removed
+     */
+    public void removeDiedListener(Event listener){ diedListeners.remove(listener); }
+
+    /**
+     * Cleans set of listeners
+     */
+    public void clearDiedListener(){ diedListeners.clear(); }
+
+    /**
+     * Returns how much hp does this unit still have
+     * @return Remaining Hp
+     */
     public int getHp() { return Hp; }
     private void addHp(int Hp) {
         this.Hp = Hp;
         if(this.Hp <= 0) Die();
     }
+
+    /**
+     * Returns how many attack points does this unit have
+     * @return Attack points
+     */
     public int getAtt() { return Att; }
     
+    /**
+     * Check if unit is assigned to hex
+     * @return True if unit is not assigned to hex, false if it is
+     */
     public boolean checkHex()
     {
         if(hex != null) return hex.checkIfContainsEntity(this);
         else return true;
     }
+
+    /**
+     * Gets hex this unit is currently assigned to
+     * @return Hex this unit is currently assigned to
+     */
     public Hex getHex() { return hex; } 
+
+    /**
+     * Get player this unit belongs to
+     * @return Player this unit belongs to
+     */
     public Player getPlayer() { return player; }
+
+    /**
+     * Lock used so that this unit can attempt only one action at once
+     */
     protected transient ReentrantLock lock = new ReentrantLock();
 
+    /**
+     * Constructor
+     * @param player Player this unit belongs to
+     */
     public Entity(Player player) {
         this.player = player;
         unitID = player.addEntity(this);
     }
 
+    /**
+     * Loop of attacks, once started, it will continue unless one of units dies or goes out of range
+     * @param entity Entity to attack
+     */
     public final void Attack(Entity entity) { //attack loops around between units until one of them goes out of range or dies
         // if unit is considered dead, dont act, safeguard in case player keeps the object
         if(Hp <= 0) return;
@@ -82,6 +189,9 @@ public abstract class Entity implements Serializable{
         postActionBreak();
     }
     
+    /**
+     * Unit dies, thus is removed from play
+     */
     public final void Die()
     {
         if(Hp != 0)
@@ -93,6 +203,12 @@ public abstract class Entity implements Serializable{
         Hp = 0;
         hex.RemoveEntity(this);
     }
+
+    /**
+     * Creates image by taking appopriate from Icons folder and then recolloring black pixels to Player colors
+     * @param imageLocation Path to base image's location, including image name and extension
+     * @return Image representing unit on map in Player's colors
+     */
     protected final BufferedImage createIlustration(String imageLocation)
     {
         BufferedImage image;
@@ -144,30 +260,61 @@ public abstract class Entity implements Serializable{
             //0xFF000000 = pure black with no alpha
             rgbRaster[i] = rgbRaster[i] > 0xFF000000 ? transparent : unitColor;
         }*/
+        /*
+        // Saves resulting image in folder for debug porpuses
         File dump = new File("dump.gif");
         try{
             ImageIO.write(image, "gif", dump);
         }
         catch(Exception e) {}
+        */
         return image;
     }
+
+    /**
+     * Gets image representing unit on map, or creates it if it doesn't exist yet
+     * @param imageLocation Path to base image's location, including image name and extension
+     * @return Image representing unit on map in Player's colors
+     */
     protected final BufferedImage getIlustration(String imageLocation)
     {
         if(ilustration == null) ilustration = createIlustration(imageLocation);
         if(ilustration == null) JOptionPane.showConfirmDialog(null, "Error while reading file\n" + imageLocation);
         return ilustration;
     }
+
+    /**
+     * @return Unit size
+     */
     public abstract int InitSize();
+
+    /**
+     * Method used by EntityDescriptor class to get image representing unit
+     * @return Image representing unit
+     */
     public abstract BufferedImage getIlustration();
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException 
     {
         in.defaultReadObject();
         lock = new ReentrantLock();
     }
+
+    /**
+     * Debug command to set unit to specific hex regardless of movement range
+     * @param hex Hex to set unit to
+     * @param password Required password
+     */
     public void setHex(Hex hex, String password)
     {
         if(checkHex() && password.equals("UshallNotpass")) this.hex = hex;
     }
+
+    /**
+     * Method to check if unit is about to walk / attack outside of the map
+     * @param column Coordinates to check
+     * @param row Coordinates to check
+     * @return True means that that it is within the map's bounds, false means its not
+     */
     protected boolean inMapBounds(int column, int row)
     {
         boolean result = (0 <= column && column < hex.map.length);
@@ -176,6 +323,9 @@ public abstract class Entity implements Serializable{
         return  result;
     }
     
+    /**
+     * Method occuring after every action taken by entity, pausing code's execution for greater raport clarity
+     */
     protected void postActionBreak()
     {
         try
@@ -186,6 +336,9 @@ public abstract class Entity implements Serializable{
         { }
     }
     
+    /**
+     * @return Unit name
+     */
     @Override
     public String toString() {
         return "Entity";
